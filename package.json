@@ -1,0 +1,45 @@
+{
+  "name": "junkreaper",
+  "productName": "Junkreaper",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Electron + React desktop app whose main view is an animated elevator ride; Playwright drives a headless Chromium in the background to restore saved account sessions, and each session that comes online advances the elevator one floor.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/main/index.cjs",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite",
+    "build": "npm run build:main && npm run build:renderer",
+    "build:main": "node scripts/build-main.mjs",
+    "build:renderer": "vite build",
+    "start": "npm run build && electron .",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc -p tsconfig.node.json && tsc -p tsconfig.web.json",
+    "test": "node --disable-warning=ExperimentalWarning --test \"tests/**/*.test.ts\"",
+    "test:smoke": "npm run build:main && node scripts/smoke.mjs",
+    "sessions:probe": "npm run build:main && node dist/cli/probe.cjs",
+    "setup:browsers": "playwright install chromium",
+    "package": "npm run build && electron-builder",
+    "clean": "node -e \"import('node:fs').then(fs=>fs.rmSync('dist',{recursive:true,force:true}))\""
+  },
+  "dependencies": {
+    "playwright": "1.56.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.1",
+    "electron": "^44.2.0",
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}

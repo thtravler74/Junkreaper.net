@@ -1,0 +1,53 @@
+{
+  // Copy this file to config/sessions.json (gitignored) and describe the accounts
+  // you want brought back online. Comments are allowed; the loader strips them.
+  //
+  // Resolution order, first hit wins:
+  //   1. $JUNKREAPER_SESSIONS
+  //   2. <userData>/sessions.json        (per-machine copy, written by hand)
+  //   3. <repo>/config/sessions.json     (project-local, gitignored)
+  //   4. <repo>/config/sessions.example.json  (this file, so a fresh clone runs)
+  "defaults": {
+    // Headless Chromium. Flip to false, or tick "headful" in the UI, to watch it work.
+    "headless": true,
+    // 1 keeps the elevator legible: one account restored per floor, in order.
+    "concurrency": 1,
+    "timeoutMs": 45000,
+    "waitUntil": "domcontentloaded",
+    // Keep each restored context (and its tab) alive after it reports ready, so the
+    // sessions are actually usable rather than just proven.
+    "keepContextsOpen": true
+  },
+
+  "targets": [
+    {
+      // `id` doubles as the profile directory name, so keep it a slug.
+      "id": "example-app",
+      "label": "Example App",
+      "url": "https://example.com/",
+      // A selector that only exists once you are signed in is the strongest signal
+      // available; without one the app can only check the HTTP status and will
+      // report the session as "unverified".
+      "probe": {
+        "readySelector": "h1",
+        "loggedOutSelector": "form[action*='login'] input[type='password']",
+        "loggedOutUrlPattern": ["*/login*", "*/signin*"]
+      }
+    },
+    {
+      "id": "example-docs",
+      "label": "Example Docs",
+      "url": "https://example.org/",
+      // Several targets can share one signed-in profile.
+      "profile": "example-app",
+      "floorLabel": "Docs",
+      "timeoutMs": 30000
+    },
+    {
+      "id": "disabled-example",
+      "label": "Somewhere You Are Not Signed Into",
+      "url": "https://httpbin.org/status/403",
+      "enabled": false
+    }
+  ]
+}

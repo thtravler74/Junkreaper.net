@@ -1,0 +1,10 @@
+{
+  "//": "Editor-facing union of both surfaces. `npm run typecheck` runs the two strict per-surface configs, which are the ones that catch DOM APIs leaking into the main process and Node APIs leaking into the renderer.",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "types": ["node", "vite/client"]
+  },
+  "include": ["src", "tests", "vite.config.ts"]
+}

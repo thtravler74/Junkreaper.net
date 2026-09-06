@@ -1,0 +1,66 @@
+appId: net.junkreaper.app
+productName: Junkreaper
+copyright: Copyright © 2026
+
+directories:
+  output: release
+  buildResources: build
+
+# Negations are merged with electron-builder's default `**/*`, which keeps the
+# production dependencies (Playwright) while dropping everything that only exists
+# to produce `dist/`.
+files:
+  - '!src/**'
+  - '!scripts/**'
+  - '!tests/**'
+  - '!docs/**'
+  - '!assets/**'
+  - '!config/sessions.json'
+  - '!tsconfig*.json'
+  - '!vite.config.ts'
+  - '!electron-builder.yml'
+  - '!**/*.map'
+
+# Shipped alongside the app so a fresh install has something to read on first run.
+extraResources:
+  - from: config/sessions.example.json
+    to: config/sessions.example.json
+
+asar: true
+
+# Playwright resolves its driver and browser binaries relative to its own package
+# directory and spawns them as child processes. Neither works from inside an asar
+# archive, so it has to be unpacked.
+asarUnpack:
+  - '**/node_modules/playwright/**'
+  - '**/node_modules/playwright-core/**'
+
+mac:
+  category: public.app-category.developer-tools
+  target:
+    - dmg
+    - zip
+  # The app drives Chromium child processes; hardened runtime needs the JIT
+  # entitlement for them to start.
+  hardenedRuntime: true
+
+win:
+  target:
+    - nsis
+
+linux:
+  category: Development
+  target:
+    - AppImage
+    - deb
+
+# NOTE ON BROWSERS
+# Playwright downloads Chromium into a shared cache outside node_modules
+# (~/.cache/ms-playwright on Linux, ~/Library/Caches/ms-playwright on macOS,
+# %LOCALAPPDATA%\ms-playwright on Windows), so it is *not* captured by the packager.
+# A packaged install therefore needs one of:
+#   - `npx playwright install chromium` on the target machine, or
+#   - PLAYWRIGHT_BROWSERS_PATH=0 at install time, which puts the browser inside
+#     node_modules/playwright-core so asarUnpack ships it (adds ~150 MB), or
+#   - PLAYWRIGHT_CHROMIUM_EXECUTABLE pointing at an existing Chrome/Chromium.
+# See the Packaging section of README.md.

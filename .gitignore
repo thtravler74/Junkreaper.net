@@ -1,0 +1,31 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+release/
+.vite/
+
+# local runtime state written by the background service
+.junkreaper/
+profiles/
+storage-state/
+*.log
+logs/
+
+# real session config + credentials-adjacent artefacts (never commit these)
+config/sessions.json
+config/*.local.json
+cookies/
+
+# background music is a user-supplied asset, not source
+assets/audio/*.mp3
+assets/audio/*.m4a
+assets/audio/*.ogg
+assets/audio/*.wav
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json

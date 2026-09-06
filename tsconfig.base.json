@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2023",
+    "useDefineForClassFields": true,
+
+    /* `module: preserve` implies `moduleResolution: bundler`: import specifiers are
+       emitted untouched and resolved by the real bundler (Vite for the renderer,
+       esbuild for main/preload/cli) or by Node's own resolver for tests. */
+    "module": "preserve",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+
+    /* Every relative import in this repo carries its real extension (`./foo.ts`,
+       `./Bar.tsx`). That is the one spelling understood by all four consumers:
+       Vite, esbuild, Node's native type-stripping loader (so `node --test` runs
+       the TypeScript sources with no test tooling), and tsc itself. It requires
+       `noEmit`, which is correct here — tsc only ever type-checks. */
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Deliberately off: `exactOptionalPropertyTypes` fights every options bag that
+       forwards a possibly-undefined value (Playwright launch options, React props),
+       and the churn it forces buys little here. */
+    "exactOptionalPropertyTypes": false,
+
+    "skipLibCheck": true
+  }
+}

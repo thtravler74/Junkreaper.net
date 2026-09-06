@@ -1,0 +1,341 @@
+/* Control bar, account list and the background-service log. */
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+
+.controls__spacer {
+  flex: 1;
+}
+
+.btn {
+  height: 30px;
+  padding: 0 13px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--panel-soft);
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: #2e3a4d;
+  color: var(--text);
+}
+
+.btn:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.btn--primary {
+  border-color: rgba(245, 185, 68, 0.42);
+  background: var(--amber-wash);
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.btn--primary:hover:not(:disabled) {
+  border-color: var(--amber);
+  background: rgba(245, 185, 68, 0.2);
+  color: var(--amber);
+}
+
+.btn--ghost {
+  background: transparent;
+  font-size: 11.5px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 4px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.toggle input {
+  accent-color: var(--amber);
+  cursor: pointer;
+}
+
+/* --- sections ------------------------------------------------------------- */
+
+.panel__section {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 8px;
+  min-height: 0;
+}
+
+.panel__section h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.panel__count {
+  font-family: var(--mono);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-dim);
+}
+
+/* --- account list --------------------------------------------------------- */
+
+.sessions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 7px;
+  overflow-y: auto;
+  min-height: 0;
+  padding-right: 4px;
+  /* A row cut off by the scroll boundary should read as "more below", not broken. */
+  mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 22px), transparent 100%);
+}
+
+.sessions__empty {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  color: var(--text-faint);
+  line-height: 1.7;
+}
+
+.sessions__empty code {
+  color: var(--text-dim);
+}
+
+.session {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: var(--panel-soft);
+  overflow: hidden;
+  transition: border-color 220ms ease;
+}
+
+.session[data-phase="ready"] {
+  border-color: rgba(71, 215, 160, 0.34);
+}
+
+.session[data-phase="failed"] {
+  border-color: rgba(255, 122, 122, 0.34);
+}
+
+.session__floor {
+  display: grid;
+  place-content: center;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.28);
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text-faint);
+}
+
+.session[data-phase="ready"] .session__floor {
+  border-color: rgba(71, 215, 160, 0.4);
+  color: var(--green);
+  text-shadow: 0 0 12px rgba(71, 215, 160, 0.4);
+}
+
+.session__body {
+  min-width: 0;
+}
+
+.session__head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.session__label {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session__phase {
+  flex: none;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 9.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.session[data-phase="ready"] .session__phase {
+  border-color: rgba(71, 215, 160, 0.4);
+  color: var(--green);
+}
+
+.session[data-phase="failed"] .session__phase {
+  border-color: rgba(255, 122, 122, 0.4);
+  color: var(--red);
+}
+
+.session__message {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session[data-phase="failed"] .session__message {
+  color: var(--red);
+}
+
+.session__meta {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 3px;
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+.session__url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session__timing {
+  flex: none;
+  font-family: var(--mono);
+}
+
+/* Indeterminate sweep while a restore is in flight. */
+.session__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  background-size: 45% 100%;
+  background-repeat: no-repeat;
+  animation: sweep 1.35s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  from {
+    background-position: -50% 0;
+  }
+  to {
+    background-position: 150% 0;
+  }
+}
+
+.session__reveal {
+  align-self: center;
+  padding: 4px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.session__reveal:hover {
+  border-color: #2e3a4d;
+  color: var(--text-dim);
+}
+
+/* --- log ------------------------------------------------------------------ */
+
+.log {
+  overflow-y: auto;
+  min-height: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.3);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.65;
+}
+
+.log__empty {
+  margin: 0;
+  color: var(--text-faint);
+}
+
+.log__line {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 62px 92px minmax(0, 1fr);
+  gap: 8px;
+  color: var(--text-dim);
+}
+
+.log__time,
+.log__scope {
+  color: var(--text-faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.log__message {
+  overflow-wrap: anywhere;
+}
+
+.log__line[data-level="warn"] .log__message {
+  color: var(--amber);
+}
+
+.log__line[data-level="error"] .log__message {
+  color: var(--red);
+}
+
+/* --- scrollbars ----------------------------------------------------------- */
+
+.sessions::-webkit-scrollbar,
+.log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sessions::-webkit-scrollbar-thumb,
+.log::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #1e2836;
+}
+
+.sessions::-webkit-scrollbar-track,
+.log::-webkit-scrollbar-track {
+  background: transparent;
+}
