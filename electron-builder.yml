@@ -26,6 +26,9 @@ extraResources:
   - from: config/sessions.example.json
     to: config/sessions.example.json
 
+# Rendered from build/icon.svg; electron-builder downsamples it per target.
+icon: build/icon.png
+
 asar: true
 
 # Playwright resolves its driver and browser binaries relative to its own package
@@ -53,6 +56,14 @@ linux:
   target:
     - AppImage
     - deb
+  # Electron derives the Linux app_id / WM_CLASS from `desktopName` in
+  # package.json, so that is where the name lives; this syncs the generated
+  # .desktop entry's StartupWMClass to match. Without the pair, desktop
+  # environments show a generic "Electron" entry in the dock instead of Junkreaper.
+  syncDesktopName: true
+  synopsis: Restore saved browser sessions, one elevator floor at a time
+  # Maintainer comes from package.json `author`; the deb target refuses to build
+  # without an email there.
 
 # NOTE ON BROWSERS
 # Playwright downloads Chromium into a shared cache outside node_modules

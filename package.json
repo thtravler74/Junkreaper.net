@@ -1,9 +1,19 @@
 {
   "name": "junkreaper",
   "productName": "Junkreaper",
+  "desktopName": "junkreaper.desktop",
   "version": "0.1.0",
   "private": true,
   "description": "Electron + React desktop app whose main view is an animated elevator ride; Playwright drives a headless Chromium in the background to restore saved account sessions, and each session that comes online advances the elevator one floor.",
+  "author": {
+    "name": "thtravler74",
+    "email": "thetravler74@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thtravler74/Junkreaper.net.git"
+  },
+  "homepage": "https://github.com/thtravler74/Junkreaper.net",
   "license": "MIT",
   "type": "module",
   "main": "dist/main/index.cjs",

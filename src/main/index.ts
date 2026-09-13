@@ -1,3 +1,4 @@
+import path from 'node:path';
 import process from 'node:process';
 import { app, dialog, BrowserWindow } from 'electron';
 import { registerIpc, type IpcRegistration } from './ipc/register.ts';
@@ -37,6 +38,8 @@ async function main(): Promise<void> {
     services = await createServices({
       stateRoot: app.getPath('userData'),
       cwd: app.isPackaged ? app.getPath('userData') : process.cwd(),
+      // Where electron-builder's `extraResources` drops the shipped example.
+      ...(app.isPackaged ? { resourcesDir: path.join(process.resourcesPath, 'config') } : {}),
     });
   } catch (error) {
     dialog.showErrorBox('Junkreaper could not start', (error as Error).message);

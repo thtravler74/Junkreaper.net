@@ -171,6 +171,13 @@ outright rather than telling you why.
 2. `<userData>/sessions.json`
 3. `<repo>/config/sessions.json`
 4. `<repo>/config/sessions.example.json` — so a fresh clone runs
+5. `<resources>/sessions.json` — packaged builds only
+6. `<resources>/sessions.example.json` — shipped by `extraResources`, so a fresh
+   *install* runs too
+
+Steps 5 and 6 matter because a packaged app's working directory is not the repo.
+Without them a first run of an installed build finds no config at all and dies on
+an error dialog.
 
 Comments are allowed. Validation reports **every** problem at once, each with its
 JSON path (`targets[2].probe.readySelector must be a non-empty string`).
@@ -315,6 +322,13 @@ lives in a shared cache outside `node_modules` (`~/.cache/ms-playwright`,
 Playwright itself is unpacked from the asar archive, because it resolves its driver
 relative to its own package directory and spawns it as a child process.
 
+Linux output is an AppImage (~124 MB) and a `.deb` (~97 MB) in `release/`. The deb's
+maintainer comes from `author` in `package.json` - the target refuses to build
+without an email there - and `desktopName` lives in `package.json` too, because
+Electron derives the Linux `app_id`/`WM_CLASS` from it; `linux.syncDesktopName`
+keeps the generated `.desktop` entry's `StartupWMClass` in step so the running
+window associates with its launcher icon.
+
 ---
 
 ## Troubleshooting
@@ -344,7 +358,7 @@ click or keypress — click the window once.
 ## Tests
 
 ```bash
-npm test          # 48 unit tests: reducer, config validation, cookie parsing
+npm test            # 55 unit tests: reducer, config validation, cookie parsing, origin checks
 npm run test:smoke  # end-to-end, no network egress required
 ```
 

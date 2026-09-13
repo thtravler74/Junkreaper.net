@@ -12,6 +12,8 @@ export interface BootstrapOptions {
   /** Project root used to find `config/sessions.json`. */
   cwd?: string;
   explicitConfigPath?: string | undefined;
+  /** `process.resourcesPath/config` in a packaged build; absent for the CLI. */
+  resourcesDir?: string | undefined;
   logLevel?: LogLevel;
   echoLogs?: boolean;
 }
@@ -45,6 +47,7 @@ export async function createServices(options: BootstrapOptions): Promise<Service
     stateRoot: options.stateRoot,
     cwd,
     explicitPath: options.explicitConfigPath ?? process.env.JUNKREAPER_SESSIONS,
+    resourcesDir: options.resourcesDir,
   });
 
   log.info(`state root: ${store.root}`);

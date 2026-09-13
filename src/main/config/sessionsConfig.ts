@@ -221,27 +221,41 @@ export function parseSessionsConfig(raw: unknown, source: string): SessionsConfi
   return { defaults, targets };
 }
 
+export interface ConfigSearchOptions {
+  stateRoot: string;
+  cwd: string;
+  explicitPath?: string | undefined;
+  /**
+   * `process.resourcesPath/config` in a packaged build, where `extraResources`
+   * puts the shipped example. A packaged app's cwd is not the repo, so without
+   * this the example is unreachable and a first run has no config at all.
+   */
+  resourcesDir?: string | undefined;
+}
+
 /**
  * Resolution order, first hit wins:
  *   1. `$JUNKREAPER_SESSIONS`                  — explicit override
  *   2. `<stateRoot>/sessions.json`             — the user's own copy (userData dir)
  *   3. `<cwd>/config/sessions.json`            — project-local, gitignored
  *   4. `<cwd>/config/sessions.example.json`    — committed sample, so a fresh clone runs
+ *   5. `<resourcesDir>/sessions.json`          — shipped alongside a packaged build
+ *   6. `<resourcesDir>/sessions.example.json`  — ditto, so a fresh install runs too
  */
-export function candidateConfigPaths(options: { stateRoot: string; cwd: string; explicitPath?: string | undefined }): string[] {
+export function candidateConfigPaths(options: ConfigSearchOptions): string[] {
   const paths: string[] = [];
   if (options.explicitPath) paths.push(path.resolve(options.explicitPath));
   paths.push(path.join(options.stateRoot, 'sessions.json'));
   paths.push(path.join(options.cwd, 'config', 'sessions.json'));
   paths.push(path.join(options.cwd, 'config', 'sessions.example.json'));
+  if (options.resourcesDir) {
+    paths.push(path.join(options.resourcesDir, 'sessions.json'));
+    paths.push(path.join(options.resourcesDir, 'sessions.example.json'));
+  }
   return paths;
 }
 
-export async function loadSessionsConfig(options: {
-  stateRoot: string;
-  cwd: string;
-  explicitPath?: string | undefined;
-}): Promise<LoadedSessionsConfig> {
+export async function loadSessionsConfig(options: ConfigSearchOptions): Promise<LoadedSessionsConfig> {
   const candidates = candidateConfigPaths(options);
   const attempted: string[] = [];
 

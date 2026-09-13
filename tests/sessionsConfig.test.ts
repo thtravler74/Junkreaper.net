@@ -140,4 +140,22 @@ describe('candidateConfigPaths', () => {
     const paths = candidateConfigPaths({ stateRoot: '/state', cwd: '/repo' });
     assert.equal(paths.length, 3);
   });
+
+  it('falls back to a packaged build resources dir', () => {
+    // Regression: a packaged app's cwd is not the repo, so without this the
+    // example shipped via electron-builder `extraResources` is unreachable and a
+    // first run finds no config at all - which is a fatal error dialog.
+    const paths = candidateConfigPaths({ stateRoot: '/state', cwd: '/state', resourcesDir: '/app/resources/config' });
+    assert.deepEqual(paths.slice(-2), [
+      '/app/resources/config/sessions.json',
+      '/app/resources/config/sessions.example.json',
+    ]);
+  });
+
+  it('still prefers the user copy over the shipped example', () => {
+    const paths = candidateConfigPaths({ stateRoot: '/state', cwd: '/state', resourcesDir: '/app/resources/config' });
+    assert.ok(
+      paths.indexOf('/state/sessions.json') < paths.indexOf('/app/resources/config/sessions.example.json'),
+    );
+  });
 });
