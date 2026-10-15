@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* The brand color is set per tenant at runtime via the --brand custom property. */
+@theme inline {
+  --color-brand: var(--brand, #16a34a);
+}
+
+:root {
+  --brand: #16a34a;
+  color-scheme: light;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* Framed widget: let the host page's background show through. */
+body:has(.embed-root) {
+  background: transparent;
+}

@@ -1,5 +1,7 @@
 # Junkreaper
 
+> This repo also contains **[ClutterQuote](clutterquote/README.md)**, an instant-quote and booking engine for junk removal businesses, in `clutterquote/`.
+
 A desktop app whose main view is an elevator riding up a high-rise while, in the
 background, Playwright drives headless Chromium to bring your saved account
 sessions back online. **Every account that comes back online is one floor.** Reach

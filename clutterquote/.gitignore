@@ -1,0 +1,9 @@
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env.local
+# local file-backed datastore + uploaded photos (dev only)
+.data/
+test-results/
