@@ -1,0 +1,36 @@
+{
+  "name": "songscope",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Upload a song, analyze it entirely in the browser, and get an exhaustive written description: tempo, meter, key, chords, structure, loudness, dynamics, timbre, stereo image, mood and genre estimates, plus a mastering report.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4174",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "test": "vitest run",
+    "test:e2e": "tsx scripts/e2e.ts",
+    "analyze": "node --import tsx/esm src/cli/analyze.ts"
+  },
+  "dependencies": {
+    "music-metadata": "^11.9.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "playwright": "^1.56.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.1.0",
+    "vitest": "^3.2.0"
+  }
+}

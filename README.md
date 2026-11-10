@@ -1,6 +1,7 @@
 # Junkreaper
 
-> This repo also contains **[ClutterQuote](clutterquote/README.md)**, an instant-quote and booking engine for junk removal businesses, in `clutterquote/`.
+> This repo also contains **[ClutterQuote](clutterquote/README.md)**, an instant-quote and booking engine for junk removal businesses, in `clutterquote/`,
+> and **[SongScope](songscope/README.md)**, a browser-based song analyser that writes an exhaustive description of an uploaded track (tempo, key, chords, structure, loudness, timbre, stereo, mood), in `songscope/`.
 
 A desktop app whose main view is an elevator riding up a high-rise while, in the
 background, Playwright drives headless Chromium to bring your saved account
