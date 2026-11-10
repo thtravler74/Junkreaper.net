@@ -14,6 +14,8 @@ anywhere. The same library powers a command-line tool that decodes with ffmpeg.
 Vite · React 19 · TypeScript · no runtime dependencies beyond React and
 [music-metadata](https://github.com/Borewit/music-metadata) (for tags and codec info).
 
+Requires Node.js 20.19+ or 22.12+ (the minimum for Vite 7). The CLI also needs ffmpeg.
+
 ```bash
 cd songscope
 npm install
